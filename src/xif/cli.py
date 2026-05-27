@@ -14,6 +14,9 @@ def main() -> None:
     parser.add_argument("--version", action="version", version=f"xif {__version__}")
     args = parser.parse_args()
 
+    if not args.input.is_file():
+        parser.error(f"input not found: {args.input}")
+
     if args.preview:
         print_metadata(args.input)
         return
