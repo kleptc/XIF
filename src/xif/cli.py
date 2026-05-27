@@ -22,6 +22,8 @@ def main() -> None:
         return
 
     output = args.output or args.input.with_stem(args.input.stem + "_clean")
+    if output.exists():
+        parser.error(f"output already exists: {output}")
     strip_metadata(args.input, output)
     print(f"Wrote {output}")
 
