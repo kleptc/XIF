@@ -11,6 +11,7 @@ def main() -> None:
     parser.add_argument("input", type=Path, help="Path to input image")
     parser.add_argument("-o", "--output", type=Path, help="Output path (default: <name>_clean<ext>)")
     parser.add_argument("--preview", action="store_true", help="Show metadata without stripping")
+    parser.add_argument("-f", "--force", action="store_true", help="Overwrite output if it exists")
     parser.add_argument("--version", action="version", version=f"xif {__version__}")
     args = parser.parse_args()
 
@@ -22,8 +23,8 @@ def main() -> None:
         return
 
     output = args.output or args.input.with_stem(args.input.stem + "_clean")
-    if output.exists():
-        parser.error(f"output already exists: {output}")
+    if output.exists() and not args.force:
+        parser.error(f"output already exists: {output} (use --force to overwrite)")
     strip_metadata(args.input, output)
     print(f"Wrote {output}")
 
